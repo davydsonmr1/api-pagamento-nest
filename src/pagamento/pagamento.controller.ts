@@ -1,10 +1,8 @@
 import { Controller, Get } from '@nestjs/common';
 
 @Controller('/pagamento')
-
-
 export class PagamentoController {
-@Get()
+  @Get()
   check() {
     return { status: 'CONTROLLER PAGAMENTO FUNCIONANDO' };
   }
