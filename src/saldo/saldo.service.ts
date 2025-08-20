@@ -2,7 +2,7 @@
 import { Injectable } from '@nestjs/common';
 
 @Injectable()
-export class PagamentoService {
+export class SaldoService {
 	private saldo: number = 0;
 
 	adicionarValor(valor: number): number {

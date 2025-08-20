@@ -1,21 +1,22 @@
 
 import { Controller, Get, Post, Body } from '@nestjs/common';
-import { PagamentoService } from './pagamento.service';
+import { SaldoService } from './saldo.service'; 
 
 
-@Controller('/pagamento')
-export class PagamentoController {
-  constructor(private readonly pagamentoService: PagamentoService) {}
+@Controller('/saldo')
+export class SaldoController {
+  constructor(private readonly saldoService: SaldoService) {}
 
   @Post('adicionar')
   adicionarValor(@Body('valor') valor: number) {
-    const saldo = this.pagamentoService.adicionarValor(valor);
+    const saldo = this.saldoService.adicionarValor(valor);
     return { saldo }; // retornando o saldo pra testar
   }
 
+
   @Get('saldo')
   obterSaldo() {
-    const saldo = this.pagamentoService.obterSaldo();
+    const saldo = this.saldoService .obterSaldo();
     return { saldo }; // pega o saldo 
   }
 
@@ -27,3 +28,6 @@ export class PagamentoController {
     };
   }
 }
+
+// mudar nome de pagamento pra saldo
+// armazenar saldo no banco e resgatar depois 

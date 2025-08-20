@@ -1,5 +1,5 @@
 import { Controller, Get } from '@nestjs/common';
-import { PagamentoService } from '../pagamento/pagamento.service';
+import { SaldoService } from '../saldo/saldo.service';
 
 @Controller('/health')
 export class HealthController {
@@ -8,8 +8,8 @@ export class HealthController {
   check() {
     
     const services = {
-      pagamento: {
-        status: 'Pagamento Ok',
+      Saldo: {
+        status: 'Saldo Ok',
         timestamp: new Date().toISOString()
       },
     };
