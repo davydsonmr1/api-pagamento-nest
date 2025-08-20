@@ -29,5 +29,3 @@ export class SaldoController {
   }
 }
 
-// mudar nome de pagamento pra saldo
-// armazenar saldo no banco e resgatar depois 
