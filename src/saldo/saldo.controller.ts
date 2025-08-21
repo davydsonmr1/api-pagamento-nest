@@ -10,14 +10,14 @@ export class SaldoController {
   @Post('adicionar')
   adicionarValor(@Body('valor') valor: number) {
     const saldo = this.saldoService.adicionarValor(valor);
-    return { saldo }; // retornando o saldo pra testar
+    return { saldo }; 
   }
 
 
   @Get('saldo')
   obterSaldo() {
     const saldo = this.saldoService .obterSaldo();
-    return { saldo }; // pega o saldo 
+    return { saldo }; 
   }
 
   @Get()

@@ -1,7 +1,7 @@
 import { Controller, Get, Post, Body } from '@nestjs/common';
 import { PagamentoService } from './pagamento.service';
 
-@Controller('pagamento')
+@Controller('/pagamento')
 export class PagamentoController {
   constructor(private readonly pagamentoService: PagamentoService) {}
   
@@ -16,8 +16,8 @@ export class PagamentoController {
   
   
   @Post('pagar')
-  pagarParaConta(@Body() body) {
-    const resultado = this.pagamentoService.pagarParaConta(body.idConta, body.valor);
+  async pagarParaConta(@Body() body) {
+    const resultado = await this.pagamentoService.pagarParaConta(body.idConta, body.valor);
     
     if (resultado) {
       return {
@@ -34,8 +34,8 @@ export class PagamentoController {
   
   
   @Post('transferir')
-  transferirEntreContas(@Body() body) {
-    const resultado = this.pagamentoService.transferirEntreContas(
+  async transferirEntreContas(@Body() body) {
+    const resultado = await this.pagamentoService.transferirEntreContas(
       body.idOrigem, 
       body.idDestino, 
       body.valor

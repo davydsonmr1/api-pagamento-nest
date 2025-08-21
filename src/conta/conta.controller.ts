@@ -1,26 +1,26 @@
 import { Controller, Get, Post, Body, Param } from '@nestjs/common';
 import { ContaService } from './conta.service';
 
-@Controller('conta')
+@Controller('/conta')
 export class ContaController {
   constructor(private readonly contaService: ContaService) {}
 
   
   @Post()
-  criarConta(@Body() body) {
-    return this.contaService.criarConta(body.nome);
+  async criarConta(@Body() body) {
+    return await this.contaService.criarConta(body.nome);
   }
 
   
   @Get()
-  listarContas() {
-    return this.contaService.listarContas();
+  async listarContas() {
+    return await this.contaService.listarContas();
   }
 
   
   @Get(':id')
-  buscarConta(@Param('id') id) {
-    const conta = this.contaService.buscarConta(id);
+  async buscarConta(@Param('id') id) {
+    const conta = await this.contaService.buscarConta(id);
     if (conta) {
       return conta;
     }
@@ -29,8 +29,8 @@ export class ContaController {
 
   
   @Post('depositar')
-  depositar(@Body() body) {
-    const resultado = this.contaService.depositar(body.id, body.valor);
+  async depositar(@Body() body) {
+    const resultado = await this.contaService.depositar(body.id, body.valor);
     if (resultado) {
       return { mensagem: 'Depósito realizado com sucesso', conta: resultado };
     }
@@ -39,8 +39,8 @@ export class ContaController {
 
   
   @Post('transferir')
-  transferir(@Body() body) {
-    const resultado = this.contaService.transferir(body.idOrigem, body.idDestino, body.valor);
+  async transferir(@Body() body) {
+    const resultado = await this.contaService.transferir(body.idOrigem, body.idDestino, body.valor);
     if (resultado) {
       return { mensagem: 'Transferência realizada com sucesso', resultado };
     }

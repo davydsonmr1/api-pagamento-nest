@@ -6,12 +6,12 @@ export class PagamentoService {
   constructor(private readonly contaService: ContaService) {}
   
   
-  pagarParaConta(idConta, valor) {
-    return this.contaService.depositar(idConta, valor);
+  async pagarParaConta(idConta, valor) {
+    return await this.contaService.depositar(idConta, valor);
   }
   
   
-  transferirEntreContas(idOrigem, idDestino, valor) {
-    return this.contaService.transferir(idOrigem, idDestino, valor);
+  async transferirEntreContas(idOrigem, idDestino, valor) {
+    return await this.contaService.transferir(idOrigem, idDestino, valor);
   }
 }

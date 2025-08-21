@@ -1,65 +1,64 @@
 import { Injectable } from '@nestjs/common';
+import { InjectModel } from '@nestjs/mongoose';
+import { Model } from 'mongoose';
+import { Conta, ContaDocument } from './conta.schema';
 
-// Serviço básico de conta
 @Injectable()
 export class ContaService {
-  // Lista de contas usando array simples
-  private contas: any[] = [];
+  
+  constructor(@InjectModel(Conta.name) private contaModel: Model<ContaDocument>) {}
 
-  // Criar uma nova conta
-  criarConta(nome) {
-    // Criar conta de forma bem simples
-    const novaConta = {
-      id: Date.now().toString(), // ID baseado no timestamp
+ 
+  async criarConta(nome) {
+    
+    const novaConta = new this.contaModel({
       nome: nome,
       saldo: 0
-    };
+    });
 
-    // Adicionar na lista
-    this.contas.push(novaConta);
+   
+    return await novaConta.save();
+  }
+
+  
+  async listarContas() {
+    return await this.contaModel.find().exec();
+  }
+
+  
+  async buscarConta(id) {
+    return await this.contaModel.findById(id).exec();
+  }
+
+  
+  async depositar(id, valor) {
     
-    return novaConta;
-  }
-
-  // Listar todas as contas
-  listarContas() {
-    return this.contas;
-  }
-
-  // Buscar uma conta pelo ID
-  buscarConta(id) {
-    return this.contas.find(conta => conta.id === id);
-  }
-
-  // Adicionar dinheiro na conta
-  depositar(id, valor) {
-    // Encontrar a conta
-    const conta = this.buscarConta(id);
+    const conta = await this.contaModel.findById(id).exec();
     
-    // Se encontrou a conta
+    
     if (conta) {
-      // Adicionar valor
+      
       conta.saldo = conta.saldo + valor;
-      return conta;
+      return await conta.save();
     }
 
-    // Não encontrou a conta
+    
     return null;
   }
 
-  // Transferir dinheiro entre contas
-  transferir(idOrigem, idDestino, valor) {
+  async transferir(idOrigem, idDestino, valor) {
     
-    const contaOrigem = this.buscarConta(idOrigem);
-    const contaDestino = this.buscarConta(idDestino);
+    const contaOrigem = await this.contaModel.findById(idOrigem).exec();
+    const contaDestino = await this.contaModel.findById(idDestino).exec();
 
     
     if (contaOrigem && contaDestino && contaOrigem.saldo >= valor) {
       
       contaOrigem.saldo = contaOrigem.saldo - valor;
-      
-      
       contaDestino.saldo = contaDestino.saldo + valor;
+      
+      await contaOrigem.save();
+      await contaDestino.save();
       
       return {
         contaOrigem: contaOrigem,
