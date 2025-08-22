@@ -6,10 +6,10 @@ export type ContaDocument = Conta & Document;
 @Schema()
 export class Conta {
   @Prop({ required: true })
-  nome!: string;
+  nome: string;
 
   @Prop({ default: 0 })
-  saldo!: number;
+  saldo: number;
 }
 
 export const ContaSchema = SchemaFactory.createForClass(Conta);

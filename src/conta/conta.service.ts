@@ -2,6 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { Conta, ContaDocument } from './conta.schema';
+import { HttpException, HttpStatus } from '@nestjs/common';
 
 @Injectable()
 export class ContaService {
@@ -27,7 +28,11 @@ export class ContaService {
 
   
   async buscarConta(id) {
-    return await this.contaModel.findById(id).exec();
+    const conta = await this.contaModel.findById(id).exec();
+    if (!conta) {
+      throw new HttpException('Conta não encontrada', HttpStatus.NOT_FOUND);
+    }
+    return conta;
   }
 
   
@@ -36,36 +41,47 @@ export class ContaService {
     const conta = await this.contaModel.findById(id).exec();
     
     
-    if (conta) {
-      
-      conta.saldo = conta.saldo + valor;
-      return await conta.save();
+    if (!conta) {
+      throw new HttpException('Conta não encontrada', HttpStatus.NOT_FOUND);
     }
-
+      
+    if (valor <= 0) {
+      throw new HttpException('O valor do depósito deve ser maior que zero', HttpStatus.BAD_REQUEST);
+    }
     
-    return null;
+    conta.saldo = conta.saldo + valor;
+    return await conta.save();
   }
 
   async transferir(idOrigem, idDestino, valor) {
     
     const contaOrigem = await this.contaModel.findById(idOrigem).exec();
-    const contaDestino = await this.contaModel.findById(idDestino).exec();
-
-    
-    if (contaOrigem && contaDestino && contaOrigem.saldo >= valor) {
-      
-      contaOrigem.saldo = contaOrigem.saldo - valor;
-      contaDestino.saldo = contaDestino.saldo + valor;
-      
-      await contaOrigem.save();
-      await contaDestino.save();
-      
-      return {
-        contaOrigem: contaOrigem,
-        contaDestino: contaDestino
-      };
+    if (!contaOrigem) {
+      throw new HttpException('Conta de origem não encontrada', HttpStatus.NOT_FOUND);
     }
     
-    return null;
+    const contaDestino = await this.contaModel.findById(idDestino).exec();
+    if (!contaDestino) {
+      throw new HttpException('Conta de destino não encontrada', HttpStatus.NOT_FOUND);
+    }
+    
+    if (valor <= 0) {
+      throw new HttpException('O valor da transferência deve ser maior que zero', HttpStatus.BAD_REQUEST);
+    }
+    
+    if (contaOrigem.saldo < valor) {
+      throw new HttpException('Saldo insuficiente', HttpStatus.BAD_REQUEST);
+    }
+    
+    contaOrigem.saldo = contaOrigem.saldo - valor;
+    contaDestino.saldo = contaDestino.saldo + valor;
+    
+    await contaOrigem.save();
+    await contaDestino.save();
+    
+    return {
+      contaOrigem: contaOrigem,
+      contaDestino: contaDestino
+    };
   }
 }
