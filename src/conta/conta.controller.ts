@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Param } from '@nestjs/common';
+import { Controller, Get, Post, Delete, Body, Param } from '@nestjs/common';
 import { ContaService } from './conta.service';
 
 @Controller('/conta')
@@ -45,5 +45,11 @@ export class ContaController {
       return { mensagem: 'Transferência realizada com sucesso', resultado };
     }
     return { mensagem: 'Erro ao fazer transferência' };
+  }
+
+  @Delete(':id')
+  async deletarConta(@Param('id') id) {
+    await this.contaService.deletarConta(id);
+    return { mensagem: 'Conta deletada com sucesso' };
   }
 }

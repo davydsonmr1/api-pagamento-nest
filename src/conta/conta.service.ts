@@ -84,4 +84,19 @@ export class ContaService {
       contaDestino: contaDestino
     };
   }
+
+  async deletarConta(id) {
+    const conta = await this.contaModel.findById(id).exec();
+    
+    if (!conta) {
+      throw new HttpException('Conta não encontrada', HttpStatus.NOT_FOUND);
+    }
+
+    if (conta.saldo > 0) {
+      throw new HttpException('Não é possível deletar conta com saldo positivo. Transfira o saldo antes de deletar.', HttpStatus.BAD_REQUEST);
+    }
+    
+    const resultado = await this.contaModel.findByIdAndDelete(id).exec();
+    return resultado;
+  }
 }

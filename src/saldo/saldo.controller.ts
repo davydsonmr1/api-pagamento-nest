@@ -23,7 +23,7 @@ export class SaldoController {
   @Get()
   check() {
     return { 
-      status: 'CONTROLLER PAGAMENTO FUNCIONANDO',
+      status: 'CONTROLLER Saldo FUNCIONANDO',
       timestamp: new Date().toISOString()
     };
   }
