@@ -7,6 +7,7 @@ import { HealthController } from './health/health.controller';
 import { SaldoModule } from './saldo/saldo.module';
 import { ContaModule } from './conta/conta.module';
 import { PagamentoModule } from './pagamento/pagamento.module';
+import { AuthModule } from './auth/auth.module';
 
 @Module({
   imports: [
@@ -20,7 +21,7 @@ import { PagamentoModule } from './pagamento/pagamento.module';
     }),
     SaldoModule, 
     ContaModule, 
-    PagamentoModule
+    PagamentoModule, AuthModule
   ],
   controllers: [AppController, HealthController],
   providers: [AppService],
