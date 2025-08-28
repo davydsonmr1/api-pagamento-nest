@@ -8,6 +8,7 @@ import { SaldoModule } from './saldo/saldo.module';
 import { ContaModule } from './conta/conta.module';
 import { PagamentoModule } from './pagamento/pagamento.module';
 import { AuthModule } from './auth/auth.module';
+import { ProductsModule } from './products/products.module';
 
 @Module({
   imports: [
@@ -22,7 +23,8 @@ import { AuthModule } from './auth/auth.module';
     // SaldoModule, 
     // ContaModule, 
     // PagamentoModule, 
-    AuthModule
+    AuthModule,
+    ProductsModule
   ],
   controllers: [AppController, HealthController],
   providers: [AppService],
