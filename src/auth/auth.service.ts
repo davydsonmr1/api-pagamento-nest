@@ -1,13 +1,13 @@
 
 import { Injectable } from '@nestjs/common';
-import { JwtService } from '@nestjs/jwt'; // Importe o serviço JWT
+import { JwtService } from '@nestjs/jwt'; 
 
 @Injectable()
 export class AuthService {
   constructor(private readonly jwtService: JwtService) {}
   async validateUser(username: string, password: string): Promise<any> {
 
-    const user = { username: 'user1', password: 'password1' };
+    const user = { username: 'teste', password: 'teste' };
     if (user.username === username && user.password === password) {
       const { password, ...result } = user;
       return result;
@@ -15,7 +15,7 @@ export class AuthService {
     return null;
   }
 
-  // Método para gerar o token JWT.
+  //  gerar o token JWT.
   async login(user: any) {
     const payload = { username: user.username, sub: user.userId };
     return {

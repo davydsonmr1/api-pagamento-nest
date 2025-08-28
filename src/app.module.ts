@@ -12,16 +12,17 @@ import { AuthModule } from './auth/auth.module';
 @Module({
   imports: [
     ConfigModule.forRoot(),
-    MongooseModule.forRootAsync({
-      imports: [ConfigModule],
-      useFactory: async (configService: ConfigService) => ({
-        uri: configService.get<string>('MONGODB_URI'),
-      }),
-      inject: [ConfigService],
-    }),
-    SaldoModule, 
-    ContaModule, 
-    PagamentoModule, AuthModule
+    // MongooseModule.forRootAsync({
+    //   imports: [ConfigModule],
+    //   useFactory: async (configService: ConfigService) => ({
+    //     uri: configService.get<string>('MONGODB_URI'),
+    //   }),
+    //   inject: [ConfigService],
+    // }),
+    // SaldoModule, 
+    // ContaModule, 
+    // PagamentoModule, 
+    AuthModule
   ],
   controllers: [AppController, HealthController],
   providers: [AppService],
